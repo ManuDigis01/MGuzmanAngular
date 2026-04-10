@@ -1,0 +1,6 @@
+@AngularGuzman.Server_HostAddress = http://localhost:5194
+
+GET {{AngularGuzman.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

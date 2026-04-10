@@ -1,0 +1,201 @@
+<div class="container mt-5">
+
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="bg-primary bg-gradient p-4 text-white d-flex justify-content-between align-items-center rounded-top">
+      <div>
+        <h4 class="mb-1 fw-bold">
+          <i class="bi bi-people-fill me-2"></i>
+          Gestión de Usuarios
+        </h4>
+        <small class="opacity-75 fst-italic">Administra los usuarios</small>
+      </div>
+
+      <button class="btn btn-outline-light fw-semibold shadow-sm"
+              (click)="agregar()">
+        <i class="bi bi-person-plus-fill me-1"></i>
+        Nuevo Usuario
+      </button>
+    </div>
+
+    <div class="card-body p-4">
+
+      <!-- TABLA -->
+      <div class="table-responsive">
+        <table class="table align-middle table-hover">
+
+          <thead>
+            <tr class="text-muted small">
+              <th>User</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Nacimiento</th>
+              <th>Estatus</th>
+              <th class="text-end">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="usuarios.length > 0; else noData">
+
+            <tr *ngFor="let usuario of usuarios; trackBy: trackById" class="hover-row">
+
+              <td class="fw-semibold">
+                <i class="bi bi-person-circle text-primary me-1"></i>
+                {{ usuario.userName }}
+              </td>
+
+              <td>{{ usuario.nombre }}</td>
+
+              <td class="text-muted">{{ usuario.email }}</td>
+
+              <td>{{ usuario.fechaNacimiento | date:'dd MMM yyyy' }}</td>
+
+              <td>
+                <span class="badge rounded-pill px-3"
+                      [ngClass]="{
+        'bg-success-subtle text-success': usuario.estatus,
+        'bg-danger-subtle text-danger': !usuario.estatus
+      }">
+
+                  {{ usuario.estatus ? 'Activo' : 'Inactivo' }}
+
+                </span>
+              </td>
+
+              <td class="text-end">
+                <button class="btn btn-light border btn-sm me-1"
+                        (click)="editar(usuario)">
+                  ✏️
+                </button>
+
+                <button class="btn btn-light border btn-sm"
+                        (click)="eliminar(usuario.idUsuario)">
+                  🗑️
+                </button>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+      </div>
+
+      <ng-template #noData>
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-inbox display-5"></i>
+          <p>No hay usuarios</p>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="usuarioModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+      <!-- HEADER -->
+      <div class="bg-primary bg-gradient text-white p-4 d-flex justify-content-between align-items-center">
+
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-person-badge-fill fs-4"></i>
+
+          <div>
+            <h5 class="mb-0 fw-bold">
+              {{ usuarioSeleccionado.idUsuario ? 'Editar Usuario' : 'Nuevo Usuario' }}
+            </h5>
+            <small class="opacity-75">Datos del usuario</small>
+          </div>
+        </div>
+
+        <button class="btn-close btn-close-white"
+                data-bs-dismiss="modal"></button>
+
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body p-4 bg-light">
+
+        <div class="row g-3">
+
+          <!-- USER -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Usuario</label>
+            <input class="form-control shadow-sm"
+                   placeholder="Ingrese usuario"
+                   [(ngModel)]="usuarioSeleccionado.userName">
+          </div>
+
+          <!-- NOMBRE -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Nombre</label>
+            <input class="form-control shadow-sm"
+                   placeholder="Ingrese nombre"
+                   [(ngModel)]="usuarioSeleccionado.nombre">
+          </div>
+
+          <!-- EMAIL -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Email</label>
+            <input type="email"
+                   class="form-control shadow-sm"
+                   placeholder="correo@ejemplo.com"
+                   [(ngModel)]="usuarioSeleccionado.email">
+          </div>
+
+          <!-- PASSWORD -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password"
+                   class="form-control shadow-sm"
+                   placeholder="Ingresa contraseña"
+                   [(ngModel)]="usuarioSeleccionado.password">
+          </div>
+
+          <!-- FECHA -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Fecha Nacimiento</label>
+            <input type="date"
+                   class="form-control shadow-sm"
+                   [(ngModel)]="usuarioSeleccionado.fechaNacimiento">
+          </div>
+
+          <!-- ESTATUS -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Estatus</label>
+            <select class="form-select shadow-sm"
+                    [(ngModel)]="usuarioSeleccionado.estatus">
+
+              <option [ngValue]="true">🟢 Activo</option>
+              <option [ngValue]="false">🔴 Inactivo</option>
+
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer border-0 bg-white px-4 py-3 d-flex justify-content-end gap-2">
+
+        <button class="btn btn-light border px-4"
+                data-bs-dismiss="modal">
+          Cancelar
+        </button>
+
+        <button class="btn btn-primary px-4 shadow-sm"
+                (click)="guardar()">
+          <i class="bi bi-check-circle me-1"></i>
+          Guardar
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

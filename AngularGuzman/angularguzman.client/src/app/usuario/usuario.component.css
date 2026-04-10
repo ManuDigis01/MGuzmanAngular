@@ -1,0 +1,29 @@
+.bg-gradient {
+  background: linear-gradient(135deg, #4e73df, #224abe);
+}
+
+.hover-row:hover {
+  background-color: #f8f9fc;
+  transition: 0.2s;
+}
+
+.modal-content {
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #4e73df;
+  box-shadow: 0 0 0 0.15rem rgba(78, 115, 223, 0.25);
+}

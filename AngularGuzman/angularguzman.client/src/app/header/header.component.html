@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+  <div class="container">
+
+    <!-- Logo -->
+    <a class="navbar-brand fw-semibold text-primary">
+      MiApp
+    </a>
+
+    <!-- Botón responsive -->
+    <button class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menú -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <li class="nav-item">
+          <a class="nav-link text-dark" routerLink="/usuarios">Usuarios</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-dark">Contacto</a>
+        </li>
+
+        <!-- 🔐 SI NO está logueado -->
+        <li class="nav-item ms-3" *ngIf="!isLogged()">
+          <button class="btn btn-primary px-4" (click)="goLogin()">
+            Iniciar sesión
+          </button>
+        </li>
+
+        <!-- 🔓 SI está logueado -->
+        <li class="nav-item ms-3" *ngIf="isLogged()">
+          <button class="btn btn-outline-danger px-4" (click)="logout()">
+            Cerrar sesión
+          </button>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
