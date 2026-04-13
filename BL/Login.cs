@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using BCrypt.Net;
-
+using Microsoft.EntityFrameworkCore;
 namespace BL
 {
     public class Login
@@ -25,17 +25,23 @@ namespace BL
                     result.ErrorMessage = "Email y contraseña son requeridos";
                     return result;
                 }
-
                 var usuarioDB = _context.Usuarios
-                    .FirstOrDefault(u => u.Email == Email);
-
+    .Include(u => u.IdRolNavigation) // 👈 IMPORTANTE
+    .FirstOrDefault(u => u.Email == Email);
+                if (usuarioDB != null && usuarioDB.Password == Password)
+                if (usuarioDB != null && usuarioDB.Password == Password)
                 if (usuarioDB != null && usuarioDB.Password == Password)
                 {
                     result.Correct = true;
                     result.Object = new ML.Usuario
                     {
                         IdUsuario = usuarioDB.IdUsuario,
-                        Email = usuarioDB.Email
+                        Email = usuarioDB.Email,
+                        Role = new ML.Role
+                        {
+                            IdRol = usuarioDB.IdRol,
+                            Nombre = usuarioDB.IdRolNavigation.Nombre // ✅ CORRECTO
+                        }
                     };
                 }
                 else

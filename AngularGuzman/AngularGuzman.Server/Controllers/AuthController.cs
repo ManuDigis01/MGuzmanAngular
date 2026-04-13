@@ -6,8 +6,6 @@ using System.Text;
 
 namespace AngularGuzman.Server.Controllers
 {
-
-
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
@@ -24,33 +22,36 @@ namespace AngularGuzman.Server.Controllers
         {
             var result = _login.Session(request.Email, request.Password);
 
-            // ❌ Si credenciales incorrectas
             if (!result.Correct)
             {
                 return Unauthorized(result);
             }
 
-            // 🔐 CLAVE SECRETA
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("EstaEsUnaClaveSuperSegura1234567890"));
+            // ✅ OBTENER USUARIO
+            var usuario = (ML.Usuario)result.Object;
+
+            // 🔐 CLAVE
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("EstaEsUnaClaveSuperSegura1234567890"));
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // 📌 Claims (datos dentro del token)
+            // 📌 CLAIMS (AQUÍ VA EL ROLE)
             var claims = new[]
             {
-        new Claim(ClaimTypes.Name, request.Email)
-    };
+                new Claim(ClaimTypes.Name, usuario.Email),
+                new Claim(ClaimTypes.Role, usuario.Role.Nombre) // ✅ ROLE
+            };
 
-            // 🎟️ Crear token
+            // 🎟️ TOKEN
             var token = new JwtSecurityToken(
                 claims: claims,
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: creds
             );
 
-            // 🔄 Convertir a string
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-            // ✅ Respuesta
             return Ok(new
             {
                 token = jwt

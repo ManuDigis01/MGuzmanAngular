@@ -19,7 +19,7 @@ public partial class Usuario
 
     public bool Estatus { get; set; }
 
-    public int? IdRol { get; set; }
+    public int IdRol { get; set; }
 
     public virtual Role? IdRolNavigation { get; set; }
 }

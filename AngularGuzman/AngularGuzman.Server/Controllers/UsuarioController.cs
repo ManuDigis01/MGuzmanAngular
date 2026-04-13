@@ -16,7 +16,7 @@ namespace AngularGuzman.Server.Controllers
         }
         [HttpGet]
         [Route("GetAll")]
-        [Authorize]
+        [Authorize(Roles = "Admin,User")]
         public IActionResult GetAll()
         {
             ML.Result result = _usuario.GetAll();
@@ -44,7 +44,7 @@ namespace AngularGuzman.Server.Controllers
 
         [HttpPost]
         [Route("Add")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add([FromBody] ML.Usuario usuario)
         {
             ML.Result result = _usuario.Add(usuario);
@@ -59,6 +59,8 @@ namespace AngularGuzman.Server.Controllers
         }
         [HttpPut]
         [Route("Update")]
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Update([FromBody] ML.Usuario usuario)
         {
             ML.Result result = _usuario.Update(usuario);
@@ -73,6 +75,7 @@ namespace AngularGuzman.Server.Controllers
         }
         [HttpDelete]
         [Route("Delete/{IdUsuario}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int IdUsuario)
         {
             ML.Result result = _usuario.Delete(IdUsuario);
