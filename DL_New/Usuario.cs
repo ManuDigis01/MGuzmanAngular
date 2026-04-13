@@ -18,4 +18,8 @@ public partial class Usuario
     public DateOnly? FechaNacimiento { get; set; }
 
     public bool Estatus { get; set; }
+
+    public int? IdRol { get; set; }
+
+    public virtual Role? IdRolNavigation { get; set; }
 }

@@ -25,6 +25,8 @@ namespace ML
 
         public bool Estatus { get; set; }
 
+        public ML.Role? Role { get; set; }
+
     }
     }
 

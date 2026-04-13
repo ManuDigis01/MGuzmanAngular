@@ -8,8 +8,8 @@ namespace ML
 {
     public class Role
     {
-        public string? Id {  get; set; } 
-        public string? Name { get; set; }  
+        public string? IdRol {  get; set; } 
+        public string? Nombre { get; set; }  
         
         public List<Object>? Roles { get; set; }   
     }
